@@ -93,6 +93,16 @@ void dynamic_array_destroy( struct dynamic_array *da ) {
     da = NULL;
 }
 
+size_t dynamic_array_size( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    return da->size;
+}
+
+size_t dynamic_array_capacity( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    return da->capacity;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
