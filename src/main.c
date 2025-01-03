@@ -26,6 +26,9 @@
 
 #include "main.h"
 
+#include "dynamic_array.h"
+
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,12 +49,11 @@ int main( int argc, char **argv ) {
     (void)argc; /* Suppress unused parameter warning */
     (void)argv;
 
-    fprintf( stdout, "%s\n\n", PROGRAM_NAME );
-    fprintf( stdout, "Written by: %s\n\n", PROGRAM_AUTHOR );
-    fprintf( stdout, "Program version: %u.%u.%u\n\n",
-             VERSION_GET_MAJOR( PROGRAM_VERSION_NUM ),
-             VERSION_GET_MINOR( PROGRAM_VERSION_NUM ),
-             VERSION_GET_PATCH( PROGRAM_VERSION_NUM ) );
+    struct dynamic_array *da = dynamic_array_create();
+    assert( da != NULL );
+
+    dynamic_array_destroy( da );
+    da = NULL;
 
     return EXIT_SUCCESS;
 }
