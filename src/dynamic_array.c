@@ -26,6 +26,9 @@
 
 #include "dynamic_array.h"
 
+#include "dbg.h"
+
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,7 +38,7 @@
  * ============================================================================
  */
 
-#define BUFFER_SIZE 8
+#define DEFAULT_CAPACITY 8
 
 /* Debug macro - disabled by default, can be enabled with -DDEBUG=1 */
 #ifndef DEBUG
@@ -62,6 +65,33 @@ struct dynamic_array {
  * Public Function Implementations
  * ============================================================================
  */
+
+struct dynamic_array *dynamic_array_create( void ) {
+    struct dynamic_array *da;
+
+    da = malloc( sizeof *da );
+    assert( da != NULL );
+
+    da->buffer = malloc( sizeof *da->buffer * DEFAULT_CAPACITY );
+    assert( da->buffer != NULL );
+    memset( da->buffer, 0, sizeof *da->buffer * DEFAULT_CAPACITY );
+
+    da->size     = 0;
+    da->capacity = DEFAULT_CAPACITY;
+
+    return da;
+}
+
+void dynamic_array_destroy( struct dynamic_array *da ) {
+    assert( da != NULL );
+
+    da->size     = 0;
+    da->capacity = 0;
+    free( da->buffer );
+    da->buffer = NULL;
+    free( da );
+    da = NULL;
+}
 
 /* ============================================================================
  * Private Function Implementations
