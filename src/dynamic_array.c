@@ -103,6 +103,20 @@ size_t dynamic_array_capacity( const struct dynamic_array *da ) {
     return da->capacity;
 }
 
+void dynamic_array_expand( struct dynamic_array *da ) {
+    assert( da != NULL );
+    assert( ( sizeof *da->buffer * ( da->capacity << 1 ) ) < SIZE_MAX );
+    da->capacity <<= 1; // capacity is doubled through bit shifting
+    int *buffer = realloc( da->buffer, sizeof *da->buffer * da->capacity );
+    assert( buffer != NULL );
+    da->buffer = buffer;
+}
+
+void dynamic_array_push( struct dynamic_array *da, const int data ) {
+    if ( da->size + 1 >= da->capacity ) { dynamic_array_expand( da ); }
+    da->buffer[da->size++] = data;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
