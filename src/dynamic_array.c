@@ -117,6 +117,12 @@ void dynamic_array_push( struct dynamic_array *da, const int data ) {
     da->buffer[da->size++] = data;
 }
 
+void dynamic_array_print( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    for ( size_t i = 0; i < da->size; i++ ) { printf( "%d ", da->buffer[i] ); }
+    putchar( '\n' );
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
