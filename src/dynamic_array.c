@@ -117,6 +117,12 @@ void dynamic_array_push( struct dynamic_array *da, const int data ) {
     da->buffer[da->size++] = data;
 }
 
+int dynamic_array_pop( struct dynamic_array *da ) {
+    // FIX: undefined behavior on empty array in non-debug mode
+    assert( da->size > 0 );
+    return da->buffer[--da->size];
+}
+
 void dynamic_array_print( const struct dynamic_array *da ) {
     assert( da != NULL );
     for ( size_t i = 0; i < da->size; i++ ) { printf( "%d ", da->buffer[i] ); }
