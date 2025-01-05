@@ -138,6 +138,20 @@ int dynamic_array_find( const struct dynamic_array *da, const int data ) {
     return -1;
 }
 
+// FIX: These functions should validate non-NULL inputs at runtime
+int dynamic_array_get( const struct dynamic_array *da, const size_t index ) {
+    assert( da != NULL );
+    assert( index < da->size );
+    return da->buffer[index];
+}
+
+void dynamic_array_set( const struct dynamic_array *da, const size_t index,
+                        const int data ) {
+    assert( da != NULL );
+    assert( index < da->size );
+    da->buffer[index] = data;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
