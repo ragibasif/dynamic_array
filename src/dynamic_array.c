@@ -129,6 +129,15 @@ void dynamic_array_print( const struct dynamic_array *da ) {
     putchar( '\n' );
 }
 
+int dynamic_array_find( const struct dynamic_array *da, const int data ) {
+    assert( da != NULL );
+
+    for ( size_t i = 0; i < da->size; i++ ) {
+        if ( da->buffer[i] == data ) { return (int)i; }
+    }
+    return -1;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
