@@ -194,6 +194,20 @@ void dynamic_array_clear( struct dynamic_array *da ) {
     }
 }
 
+int dynamic_array_find_transposition( struct dynamic_array *da, int data ) {
+    // every time the data is found, swap it one position to the left
+    // frequently searched for data is gradually moved to the front to
+    // reduce search time
+    int position = dynamic_array_find( da, data );
+    if ( position > 0 ) {
+        int temp_data            = da->buffer[position];
+        da->buffer[position]     = da->buffer[position - 1];
+        da->buffer[position - 1] = temp_data;
+        position--;
+    }
+    return position;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
