@@ -164,6 +164,28 @@ int dynamic_array_back( const struct dynamic_array *da ) {
     return da->buffer[da->size - 1];
 }
 
+// time: O(N)
+void dynamic_array_insert( struct dynamic_array *da, const size_t index,
+                           const int data ) {
+    assert( index < da->size );
+    if ( da->size + 1 >= da->capacity ) { dynamic_array_expand( da ); }
+    for ( size_t i = da->size; i > index; i-- ) {
+        da->buffer[i] = da->buffer[i - 1];
+    }
+    da->buffer[index] = data;
+    da->size++;
+}
+
+int dynamic_array_remove( struct dynamic_array *da, const size_t index ) {
+    assert( index < da->size && da->size > 0 );
+    int item = da->buffer[index];
+    for ( size_t i = index; i < da->size - 1; i++ ) {
+        da->buffer[i] = da->buffer[i + 1];
+    }
+    da->size--;
+    return item;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
