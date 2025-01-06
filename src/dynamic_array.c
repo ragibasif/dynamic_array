@@ -186,6 +186,14 @@ int dynamic_array_remove( struct dynamic_array *da, const size_t index ) {
     return item;
 }
 
+void dynamic_array_clear( struct dynamic_array *da ) {
+    assert( da != NULL );
+    if ( da->size > 0 ) {
+        memset( da->buffer, 0, sizeof *da->buffer * da->capacity );
+        da->size = 0;
+    }
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
