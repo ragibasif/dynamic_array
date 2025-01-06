@@ -152,6 +152,18 @@ void dynamic_array_set( const struct dynamic_array *da, const size_t index,
     da->buffer[index] = data;
 }
 
+int dynamic_array_front( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    assert( da->size > 0 );
+    return da->buffer[0];
+}
+
+int dynamic_array_back( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    assert( da->size > 0 );
+    return da->buffer[da->size - 1];
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
