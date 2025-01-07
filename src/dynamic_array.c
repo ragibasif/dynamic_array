@@ -19,6 +19,16 @@
  *
  */
 
+// FIX: Add error handling for release mode
+// FIX: Add bounds checking in release mode (assertions compile out)
+// TODO: Add documentation
+// TODO: Add shrink_to_fit()
+// TODO: Add reserve()
+// TODO: Add usage examples
+// FIX: add error codes
+// TODO: Add helper functions for index, size, pointer validations
+// FIX: Convert hard coded int type to generic
+
 /* ============================================================================
  * Includes
  * ============================================================================
