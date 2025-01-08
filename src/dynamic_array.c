@@ -36,8 +36,6 @@
 
 #include "dynamic_array.h"
 
-#include "dbg.h"
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
