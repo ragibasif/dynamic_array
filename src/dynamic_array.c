@@ -253,6 +253,11 @@ void dynamic_array_rotate_left_n( struct dynamic_array *da, int count ) {
     int rotations = ( da->size + ( count % da->size ) ) % da->size;
     for ( int i = 0; i < rotations; i++ ) { dynamic_array_rotate_left( da ); }
 }
+void dynamic_array_fill( struct dynamic_array *da, const int data ) {
+    assert( da != NULL );
+    assert( da->size > 0 );
+    for ( size_t i = 0; i < da->size; i++ ) { da->buffer[i] = data; }
+}
 
 /* ============================================================================
  * Private Function Implementations
