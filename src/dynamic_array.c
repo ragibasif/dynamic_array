@@ -1,5 +1,5 @@
 /*
- * File: main.c
+ * File: dynamic_array.c
  * Author: Ragib Asif
  * Email: ragibasif@tuta.io
  * GitHub: https://github.com/ragibasif
@@ -224,7 +224,7 @@ void dynamic_array_rotate_right( struct dynamic_array *da ) {
     // shift all elements to the right
     // set first element to previously saved last element
     int last = da->buffer[da->size - 1];
-    for ( int i = da->size - 1; i > 0; i-- ) {
+    for ( size_t i = da->size - 1; i > 0; i-- ) {
         da->buffer[i] = da->buffer[i - 1];
     }
     da->buffer[0] = last;
@@ -236,7 +236,7 @@ void dynamic_array_rotate_left( struct dynamic_array *da ) {
     // shift all elements to the left
     // set last element to previously saved first element
     int first = da->buffer[0];
-    for ( int i = 0; i < da->size - 1; i++ ) {
+    for ( size_t i = 0; i < da->size - 1; i++ ) {
         da->buffer[i] = da->buffer[i + 1];
     }
     da->buffer[da->size - 1] = first;
@@ -245,13 +245,17 @@ void dynamic_array_rotate_left( struct dynamic_array *da ) {
 void dynamic_array_rotate_right_n( struct dynamic_array *da, int count ) {
     // get the mod so as not to do redundant operations
     int rotations = ( da->size + ( count % da->size ) ) % da->size;
-    for ( int i = 0; i < rotations; i++ ) { dynamic_array_rotate_right( da ); }
+    for ( size_t i = 0; i < rotations; i++ ) {
+        dynamic_array_rotate_right( da );
+    }
 }
 
 void dynamic_array_rotate_left_n( struct dynamic_array *da, int count ) {
     // get the mod so as not to do redundant operations
     int rotations = ( da->size + ( count % da->size ) ) % da->size;
-    for ( int i = 0; i < rotations; i++ ) { dynamic_array_rotate_left( da ); }
+    for ( size_t i = 0; i < rotations; i++ ) {
+        dynamic_array_rotate_left( da );
+    }
 }
 void dynamic_array_fill( struct dynamic_array *da, const int data ) {
     assert( da != NULL );
