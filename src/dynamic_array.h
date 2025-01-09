@@ -22,6 +22,7 @@ extern "C" {
  * ============================================================================
  */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -62,6 +63,7 @@ extern void   dynamic_array_push( struct dynamic_array *da, const int value );
 extern int    dynamic_array_pop( struct dynamic_array *da );
 extern size_t dynamic_array_size( const struct dynamic_array *da );
 extern size_t dynamic_array_capacity( const struct dynamic_array *da );
+extern bool   dynamic_array_empty( const struct dynamic_array *da );
 extern void   dynamic_array_fill( struct dynamic_array *da, const int value );
 extern void   dynamic_array_expand( struct dynamic_array *da );
 extern void   dynamic_array_rotate_right( struct dynamic_array *da );

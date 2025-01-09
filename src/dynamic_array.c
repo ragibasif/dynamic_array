@@ -265,6 +265,11 @@ int dynamic_array_at( const struct dynamic_array *da, const size_t index ) {
     return da->buffer[index];
 }
 
+bool dynamic_array_empty( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    return da->size == 0;
+}
+
 /* ============================================================================
  * Private Function Implementations
  * ============================================================================
