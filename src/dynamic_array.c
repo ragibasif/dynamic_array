@@ -8,15 +8,6 @@
  * Copyright (c) 2025 Ragib Asif
  * Version 1.0.0
  *
- * Description:
- *   Implementation file that provides functionality described in example.h.
- *   Include detailed description of what this module does.
- *
- * Notes:
- *   - Any important implementation details or assumptions
- *   - Known limitations or edge cases
- *   - Performance considerations if applicable
- *
  */
 
 // FIX: Add error handling for release mode

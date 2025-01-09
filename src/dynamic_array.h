@@ -8,15 +8,6 @@
  * Copyright (c) 2025 Ragib Asif
  * Version 1.0.0
  *
- * Description:
- *   Brief description of what this header file provides.
- *   Include its purpose and main functionality.
- *
- * Notes:
- *   - Any important implementation notes or caveats
- *   - Dependencies or requirements
- *   - Known limitations or future improvements
- *
  */
 
 #ifndef DYNAMIC_ARRAY_H
@@ -66,26 +57,29 @@ struct dynamic_array;
  * ============================================================================
  */
 
-struct dynamic_array *dynamic_array_create( void );
-void                  dynamic_array_destroy( struct dynamic_array *da );
-void   dynamic_array_push( struct dynamic_array *da, const int data );
-int    dynamic_array_pop( struct dynamic_array *da );
-size_t dynamic_array_size( const struct dynamic_array *da );
-size_t dynamic_array_capacity( const struct dynamic_array *da );
-void   dynamic_array_fill( struct dynamic_array *da, const int data );
-void   dynamic_array_expand( struct dynamic_array *da );
-void   dynamic_array_rotate_right( struct dynamic_array *da );
-void   dynamic_array_rotate_left( struct dynamic_array *da );
-void   dynamic_array_rotate_right_n( struct dynamic_array *da, const int data );
-void   dynamic_array_rotate_left_n( struct dynamic_array *da, const int data );
-int    dynamic_array_get( const struct dynamic_array *da, const size_t index );
-void   dynamic_array_set( const struct dynamic_array *da, const size_t index,
-                          const int data );
-void   dynamic_array_print( const struct dynamic_array *da );
-void   dynamic_array_clear( struct dynamic_array *da );
-int    dynamic_array_find( const struct dynamic_array *da, const int data );
-int    dynamic_array_front( const struct dynamic_array *da );
-int    dynamic_array_back( const struct dynamic_array *da );
+extern struct dynamic_array *dynamic_array_create( void );
+extern void                  dynamic_array_destroy( struct dynamic_array *da );
+extern void   dynamic_array_push( struct dynamic_array *da, const int data );
+extern int    dynamic_array_pop( struct dynamic_array *da );
+extern size_t dynamic_array_size( const struct dynamic_array *da );
+extern size_t dynamic_array_capacity( const struct dynamic_array *da );
+extern void   dynamic_array_fill( struct dynamic_array *da, const int data );
+extern void   dynamic_array_expand( struct dynamic_array *da );
+extern void   dynamic_array_rotate_right( struct dynamic_array *da );
+extern void   dynamic_array_rotate_left( struct dynamic_array *da );
+extern void   dynamic_array_rotate_right_n( struct dynamic_array *da,
+                                            const int             data );
+extern void   dynamic_array_rotate_left_n( struct dynamic_array *da,
+                                           const int             data );
+extern int    dynamic_array_get( const struct dynamic_array *da,
+                                 const size_t                index );
+extern void   dynamic_array_set( const struct dynamic_array *da,
+                                 const size_t index, const int data );
+extern void   dynamic_array_print( const struct dynamic_array *da );
+extern void   dynamic_array_clear( struct dynamic_array *da );
+extern int dynamic_array_find( const struct dynamic_array *da, const int data );
+extern int dynamic_array_front( const struct dynamic_array *da );
+extern int dynamic_array_back( const struct dynamic_array *da );
 
 #ifdef __cplusplus
 }
