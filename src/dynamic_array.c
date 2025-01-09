@@ -111,9 +111,9 @@ void dynamic_array_expand( struct dynamic_array *da ) {
     da->buffer = buffer;
 }
 
-void dynamic_array_push( struct dynamic_array *da, const int data ) {
+void dynamic_array_push( struct dynamic_array *da, const int value ) {
     if ( da->size + 1 >= da->capacity ) { dynamic_array_expand( da ); }
-    da->buffer[da->size++] = data;
+    da->buffer[da->size++] = value;
 }
 
 int dynamic_array_pop( struct dynamic_array *da ) {
@@ -128,11 +128,11 @@ void dynamic_array_print( const struct dynamic_array *da ) {
     putchar( '\n' );
 }
 
-int dynamic_array_find( const struct dynamic_array *da, const int data ) {
+int dynamic_array_find( const struct dynamic_array *da, const int value ) {
     assert( da != NULL );
 
     for ( size_t i = 0; i < da->size; i++ ) {
-        if ( da->buffer[i] == data ) { return (int)i; }
+        if ( da->buffer[i] == value ) { return (int)i; }
     }
     return -1;
 }
@@ -145,10 +145,10 @@ int dynamic_array_get( const struct dynamic_array *da, const size_t index ) {
 }
 
 void dynamic_array_set( const struct dynamic_array *da, const size_t index,
-                        const int data ) {
+                        const int value ) {
     assert( da != NULL );
     assert( index < da->size );
-    da->buffer[index] = data;
+    da->buffer[index] = value;
 }
 
 int dynamic_array_front( const struct dynamic_array *da ) {
@@ -165,13 +165,13 @@ int dynamic_array_back( const struct dynamic_array *da ) {
 
 // time: O(N)
 void dynamic_array_insert( struct dynamic_array *da, const size_t index,
-                           const int data ) {
+                           const int value ) {
     assert( index < da->size );
     if ( da->size + 1 >= da->capacity ) { dynamic_array_expand( da ); }
     for ( size_t i = da->size; i > index; i-- ) {
         da->buffer[i] = da->buffer[i - 1];
     }
-    da->buffer[index] = data;
+    da->buffer[index] = value;
     da->size++;
 }
 
@@ -193,15 +193,15 @@ void dynamic_array_clear( struct dynamic_array *da ) {
     }
 }
 
-int dynamic_array_find_transposition( struct dynamic_array *da, int data ) {
-    // every time the data is found, swap it one position to the left
-    // frequently searched for data is gradually moved to the front to
+int dynamic_array_find_transposition( struct dynamic_array *da, int value ) {
+    // every time the value is found, swap it one position to the left
+    // frequently searched for value is gradually moved to the front to
     // reduce search time
-    int position = dynamic_array_find( da, data );
+    int position = dynamic_array_find( da, value );
     if ( position > 0 ) {
-        int temp_data            = da->buffer[position];
+        int temp_value           = da->buffer[position];
         da->buffer[position]     = da->buffer[position - 1];
-        da->buffer[position - 1] = temp_data;
+        da->buffer[position - 1] = temp_value;
         position--;
     }
     return position;
@@ -246,10 +246,17 @@ void dynamic_array_rotate_left_n( struct dynamic_array *da, int count ) {
         dynamic_array_rotate_left( da );
     }
 }
-void dynamic_array_fill( struct dynamic_array *da, const int data ) {
+
+void dynamic_array_fill( struct dynamic_array *da, const int value ) {
     assert( da != NULL );
     assert( da->size > 0 );
-    for ( size_t i = 0; i < da->size; i++ ) { da->buffer[i] = data; }
+    for ( size_t i = 0; i < da->size; i++ ) { da->buffer[i] = value; }
+}
+
+//  Returns pointer to `buffer`
+const int *dynamic_array_data( const struct dynamic_array *da ) {
+    assert( da != NULL );
+    return da->buffer;
 }
 
 /* ============================================================================
