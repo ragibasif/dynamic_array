@@ -17,19 +17,9 @@
 extern "C" {
 #endif
 
-/* ============================================================================
- * Includes
- * ============================================================================
- */
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-
-/* ============================================================================
- * Macros and Constants
- * ============================================================================
- */
 
 // Version: Major.Minor.Patch (1 byte each: MMMM MMMM | NNNN NNNN | PPPP PPPP)
 #define DYNAMIC_ARRAY_VERSION_MAJOR 1
@@ -45,17 +35,7 @@ extern "C" {
 #define VERSION_GET_MINOR( v ) ( ( v >> 8 ) & 0xFF )
 #define VERSION_GET_PATCH( v ) ( v & 0xFF )
 
-/* ============================================================================
- * Type Definitions
- * ============================================================================
- */
-
 struct dynamic_array;
-
-/* ============================================================================
- * Function Declarations
- * ============================================================================
- */
 
 extern struct dynamic_array *dynamic_array_create( void );
 extern void                  dynamic_array_destroy( struct dynamic_array *da );
@@ -82,8 +62,6 @@ extern int    dynamic_array_find( const struct dynamic_array *da,
                                   const int                   value );
 extern int    dynamic_array_front( const struct dynamic_array *da );
 extern int    dynamic_array_back( const struct dynamic_array *da );
-extern int    dynamic_array_at( const struct dynamic_array *da,
-                                const size_t                index );
 extern const int *dynamic_array_data( const struct dynamic_array *da );
 
 #ifdef __cplusplus

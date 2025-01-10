@@ -13,17 +13,12 @@
 // FIX: Add error handling for release mode
 // FIX: Add bounds checking in release mode (assertions compile out)
 // TODO: Add documentation
-// TODO: Add shrink_to_fit()
-// TODO: Add reserve()
+// TODO: Add shrink_to_fit() - Reduce capacity to match size.
+// TODO: Add reserve() - Ensures at least `n` capacity without changing size.
 // TODO: Add usage examples
 // FIX: add error codes
 // TODO: Add helper functions for index, size, pointer validations
 // FIX: Convert hard coded int type to generic
-
-/* ============================================================================
- * Includes
- * ============================================================================
- */
 
 #include "dynamic_array.h"
 
@@ -32,38 +27,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* ============================================================================
- * Private Macros and Constants
- * ============================================================================
- */
-
 #define DEFAULT_CAPACITY 8
 
-/* Debug macro - disabled by default, can be enabled with -DDEBUG=1 */
+// Debug macro - disabled by default, can be enabled with -DDEBUG=1
 #ifndef DEBUG
 #define DEBUG 0
 #endif
-
-/* ============================================================================
- * Private Type Definitions
- * ============================================================================
- */
 
 struct dynamic_array {
     int   *buffer;
     size_t size;
     size_t capacity;
 };
-
-/* ============================================================================
- * Private Function Declarations
- * ============================================================================
- */
-
-/* ============================================================================
- * Public Function Implementations
- * ============================================================================
- */
 
 struct dynamic_array *dynamic_array_create( void ) {
     struct dynamic_array *da;
@@ -259,18 +234,7 @@ const int *dynamic_array_data( const struct dynamic_array *da ) {
     return da->buffer;
 }
 
-int dynamic_array_at( const struct dynamic_array *da, const size_t index ) {
-    assert( da != NULL );
-    assert( index < da->size );
-    return da->buffer[index];
-}
-
 bool dynamic_array_empty( const struct dynamic_array *da ) {
     assert( da != NULL );
     return da->size == 0;
 }
-
-/* ============================================================================
- * Private Function Implementations
- * ============================================================================
- */

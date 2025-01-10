@@ -10,11 +10,6 @@
  *
  */
 
-/* ============================================================================
- * Includes
- * ============================================================================
- */
-
 #include "dynamic_array.h"
 
 #include <assert.h>
@@ -22,22 +17,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* ============================================================================
- * Private Macros and Constants
- * ============================================================================
- */
-
-/* ============================================================================
- * Entry Point
- * ============================================================================
- */
-
 int main( int argc, char **argv ) {
     (void)argc; /* Suppress unused parameter warning */
     (void)argv;
 
     struct dynamic_array *da = dynamic_array_create();
     assert( da != NULL );
+
+    for ( int i = 0; i < 10; i++ ) { dynamic_array_push( da, ( i + 1 ) << 1 ); }
+
+    dynamic_array_print( da );
 
     dynamic_array_destroy( da );
     da = NULL;
