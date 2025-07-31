@@ -17,6 +17,9 @@ extern "C" {
 
 #include <stdlib.h>
 
+#define DEFAULT_CAPACITY_SIZE  8
+#define CAPACITY_GROWTH_FACTOR 2
+
 struct dynamic_array {
     int   *buffer;
     size_t size;
