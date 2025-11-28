@@ -21,6 +21,10 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+#define PROGRAM_NAME "Dynamic Array"
+#define AUTHOR       "Ragib Asif"
+#define VERSION      "1.0.0"
+
 // Version: Major.Minor.Patch (1 byte each: MMMM MMMM | NNNN NNNN | PPPP PPPP)
 #define DYNAMIC_ARRAY_VERSION_MAJOR 1
 #define DYNAMIC_ARRAY_VERSION_MINOR 0

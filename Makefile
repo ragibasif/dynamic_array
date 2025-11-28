@@ -8,85 +8,62 @@
 # Version 1.0.0
 #
 
-# Gets the Operating system name
-OS := $(shell uname -s)
-
-# Default shell
-SHELL := bash
-
-
-BINARY := program
-BINDIR := bin
-SRCDIR := src
-LOGDIR := log
-LIBDIR := lib
-TESTDIR := test
+SRC_DIR := src
+BUILD_DIR := build
+TEST_DIR := tests
+MAIN := $(SRC_DIR)/main.c
 
 CC := clang
-CFLAGS := -std=c23 -O1 -g3 -DDEBUG=1 -pedantic -Wall -Wextra -Wvla -Wshadow -Wconversion -Wfloat-equal -Wswitch -Wimplicit-fallthrough -fno-sanitize-recover -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -fno-optimize-sibling-calls -fstack-protector-all -Wstack-protector
-DBG := lldb
+CFLAGS := -std=c23 \
+		  -pedantic -Wall -Wextra -Wvla -Wshadow \
+		  -Wconversion -Wfloat-equal -Wswitch -Wimplicit-fallthrough \
+		  -fno-sanitize-recover -fsanitize=address -fsanitize=undefined \
+		  -fno-omit-frame-pointer -fno-optimize-sibling-calls \
+		  -fstack-protector-all -Wstack-protector \
+		  -MMD -MP \
+		  -g3 -O0 -DDEBUG=1
+
 LDFLAGS := # -lm  -I some/path/to/library
 
-TEST_LIBS := #-l cmocka -L /usr/lib
-TEST_BINARY := $(BINARY)_test_runner
 
-SRCS := $(notdir $(basename $(wildcard $(SRCDIR)/*.c)))
-OBJS :=$(patsubst %,$(LIBDIR)/%.o,$(SRCS))
+SRCS := $(wildcard $(SRC_DIR)/*.c)
+OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
+TEST_SRCS := $(wildcard $(TEST_DIR)/*.c) $(filter-out $(MAIN), $(wildcard $(SRC_DIR)/*.c))
 
-.PHONY: default all clean help run check debug tests
+TARGET := $(BUILD_DIR)/program
+TEST_TARGET := $(BUILD_DIR)/test_program
 
+.PHONY: default
 default: all
 
-# Rule for link and generate the binary file
-all: $(OBJS)
-	@echo "[LD] Linking...";
-	$(CC) -o $(BINDIR)/$(BINARY) $+ $(CFLAGS) $(LDFLAGS)
+.PHONY: all
+all: $(TARGET)
 
-# Rule for object binaries compilation
-$(LIBDIR)/%.o: $(SRCDIR)/%.c
-	@echo "[CC] Compiling...";
-	$(CC) -c $^ -o $@ $(CFLAGS) $(LDFLAGS)
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-# Compile tests and run the test binary
-tests:
-	@echo "make tests"
-	@echo "[CC] Compiling..."
-	$(CC) $(TESTDIR)/main.c -o $(BINDIR)/$(TEST_BINARY) $(CFLAGS) $(LDFLAGS) $(TEST_LIBS)
-	@which ldconfig && ldconfig -C /tmp/ld.so.cache || true # caching the library linking
-	@echo " Running $@: "
-	./$(BINDIR)/$(TEST_BINARY)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+.PHONY: run
+run: $(TARGET)
+	@make clean
+	@make all
+	./$(TARGET)
+	@make clean
+
+.PHONY: clean
 clean:
-	@echo "make clean"
-	@rm -rvf $(BINDIR)/* $(LIBDIR)/* $(LOGDIR)/*
+	@rm -rf $(BUILD_DIR)
 
-check:
-	@echo "make check"
-	@which $(CC) > /dev/null && echo "SUCCESS: $(CC) is installed" || echo "ERROR: $(CC) not found, please install $(CC)"
-	@which $(DBG) > /dev/null && echo "SUCCESS: $(DBG) is installed" || echo "ERROR: $(DBG) not found, please install $(DBG)"
-
-debug:
-	@echo "make debug"
+.PHONY: test
+test: $(TEST_SRCS)
 	@make clean
-	@make all
-	@$(DBG) ./$(BINDIR)/$(BINARY)
-
-run:
-	@echo "make run"
-	@make clean
-	@make all
-	@./$(BINDIR)/$(BINARY)
+	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(TEST_SRCS)
+	./$(TEST_TARGET)
 	@make clean
 
-help:
-	@echo "make help"
-	@echo "Makefile for building program"
-	@echo "Usage:"
-	@echo "  make             - Compiles and generates binary file program"
-	@echo "  make all         - build program"
-	@echo "  make check       - dependency check for compiler and debugger"
-	@echo "  make tests       - Compiles and run tests binary file"
-	@echo "  make clean       - remove binary files"
-	@echo "  make debug       - run program with the debugger"
-	@echo "  make run         - run program"
-	@echo "  make help        - Prints a help message with target rules"
