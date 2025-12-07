@@ -12,16 +12,16 @@
 
 #include "dynamic_array.h"
 
-#include <assert.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int main( [[maybe_unused]] int argc, [[maybe_unused]] char **argv ) {
-
-    puts( "Program: " PROGRAM_NAME );
-    puts( "Author: " AUTHOR );
-    puts( "Version: " VERSION );
-
+    struct dynamic_array *da;
+    da = dynamic_array_create();
+    for ( int i = 0; i < 10; i++ ) { dynamic_array_push( da, i ); }
+    dynamic_array_print( da );
+    dynamic_array_destroy( da );
     return EXIT_SUCCESS;
 }

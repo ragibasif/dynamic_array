@@ -1,15 +1,3 @@
-/*
- * File: dynamic_array.c
- * Author: Ragib Asif
- * Email: ragibasif@tuta.io
- * GitHub: https://github.com/ragibasif
- * LinkedIn: https://www.linkedin.com/in/ragibasif/
- * SPDX-License-Identifier: MIT
- * Copyright (c) 2025 Ragib Asif
- * Version 1.0.0
- *
- */
-
 // FIX: Add error handling for release mode
 // FIX: Add bounds checking in release mode (assertions compile out)
 // TODO: Add documentation
@@ -19,6 +7,7 @@
 // FIX: add error codes
 // TODO: Add helper functions for index, size, pointer validations
 // FIX: Convert hard coded int type to generic
+// FIX: use euclidean division for rotations
 
 #include "dynamic_array.h"
 
@@ -34,35 +23,38 @@
 #define DEBUG 0
 #endif
 
-struct dynamic_array {
-    int   *buffer;
-    size_t size;
-    size_t capacity;
-};
+// Test macro - disabled by default, can be enabled with -DTEST=1
+#ifndef TEST
+#define TEST 0
+#endif
 
 struct dynamic_array *dynamic_array_create( void ) {
     struct dynamic_array *da;
-
     da = malloc( sizeof *da );
     assert( da != NULL );
+    dynamic_array_init( da );
+    return da;
+}
 
-    da->buffer = malloc( sizeof *da->buffer * DEFAULT_CAPACITY );
-    assert( da->buffer != NULL );
-    memset( da->buffer, 0, sizeof *da->buffer * DEFAULT_CAPACITY );
-
+void dynamic_array_init( struct dynamic_array *da ) {
     da->size     = 0;
     da->capacity = DEFAULT_CAPACITY;
+    da->buffer   = malloc( sizeof *da->buffer * da->capacity );
+    assert( da->buffer != NULL );
+}
 
-    return da;
+void dynamic_array_clear( struct dynamic_array *da ) {
+    assert( da != NULL );
+    if ( da->buffer ) {
+        free( da->buffer );
+        dynamic_array_init( da );
+    }
 }
 
 void dynamic_array_destroy( struct dynamic_array *da ) {
     assert( da != NULL );
 
-    da->size     = 0;
-    da->capacity = 0;
-    free( da->buffer );
-    da->buffer = NULL;
+    dynamic_array_clear( da );
     free( da );
     da = NULL;
 }
@@ -141,7 +133,7 @@ int dynamic_array_back( const struct dynamic_array *da ) {
 // time: O(N)
 void dynamic_array_insert( struct dynamic_array *da, const size_t index,
                            const int value ) {
-    assert( index < da->size );
+    assert( index <= da->size );
     if ( da->size + 1 >= da->capacity ) { dynamic_array_expand( da ); }
     for ( size_t i = da->size; i > index; i-- ) {
         da->buffer[i] = da->buffer[i - 1];
@@ -158,14 +150,6 @@ int dynamic_array_remove( struct dynamic_array *da, const size_t index ) {
     }
     da->size--;
     return item;
-}
-
-void dynamic_array_clear( struct dynamic_array *da ) {
-    assert( da != NULL );
-    if ( da->size > 0 ) {
-        memset( da->buffer, 0, sizeof *da->buffer * da->capacity );
-        da->size = 0;
-    }
 }
 
 int dynamic_array_find_transposition( struct dynamic_array *da, int value ) {
@@ -226,12 +210,6 @@ void dynamic_array_fill( struct dynamic_array *da, const int value ) {
     assert( da != NULL );
     assert( da->size > 0 );
     for ( size_t i = 0; i < da->size; i++ ) { da->buffer[i] = value; }
-}
-
-//  Returns pointer to `buffer`
-const int *dynamic_array_data( const struct dynamic_array *da ) {
-    assert( da != NULL );
-    return da->buffer;
 }
 
 bool dynamic_array_empty( const struct dynamic_array *da ) {

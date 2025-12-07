@@ -10,7 +10,6 @@
 
 SRC_DIR := src
 BUILD_DIR := build
-TEST_DIR := tests
 MAIN := $(SRC_DIR)/main.c
 
 CC := clang
@@ -28,10 +27,8 @@ LDFLAGS := # -lm  -I some/path/to/library
 
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
-TEST_SRCS := $(wildcard $(TEST_DIR)/*.c) $(filter-out $(MAIN), $(wildcard $(SRC_DIR)/*.c))
 
 TARGET := $(BUILD_DIR)/program
-TEST_TARGET := $(BUILD_DIR)/test_program
 
 .PHONY: default
 default: all
@@ -46,9 +43,6 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
-
 .PHONY: run
 run: $(TARGET)
 	@make clean
@@ -58,12 +52,5 @@ run: $(TARGET)
 
 .PHONY: clean
 clean:
-	@rm -rf $(BUILD_DIR)
-
-.PHONY: test
-test: $(TEST_SRCS)
-	@make clean
-	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(TEST_SRCS)
-	./$(TEST_TARGET)
-	@make clean
+	@rm -rvf $(BUILD_DIR)
 
