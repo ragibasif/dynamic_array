@@ -7,11 +7,11 @@
 // FIX: add error codes
 // TODO: Add helper functions for index, size, pointer validations
 // FIX: Convert hard coded int type to generic
-// FIX: use euclidean division for rotations
 
 #include "dynamic_array.h"
 
 #include <assert.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +27,8 @@
 #ifndef TEST
 #define TEST 0
 #endif
+
+static int euclidean_division( const int a, const int b );
 
 struct dynamic_array *dynamic_array_create( void ) {
     struct dynamic_array *da;
@@ -53,7 +55,6 @@ void dynamic_array_clear( struct dynamic_array *da ) {
 
 void dynamic_array_destroy( struct dynamic_array *da ) {
     assert( da != NULL );
-
     dynamic_array_clear( da );
     free( da );
     da = NULL;
@@ -97,7 +98,6 @@ void dynamic_array_print( const struct dynamic_array *da ) {
 
 int dynamic_array_find( const struct dynamic_array *da, const int value ) {
     assert( da != NULL );
-
     for ( size_t i = 0; i < da->size; i++ ) {
         if ( da->buffer[i] == value ) { return (int)i; }
     }
@@ -192,7 +192,7 @@ void dynamic_array_rotate_left( struct dynamic_array *da ) {
 
 void dynamic_array_rotate_right_n( struct dynamic_array *da, int count ) {
     // get the mod so as not to do redundant operations
-    int rotations = ( da->size + ( count % da->size ) ) % da->size;
+    int rotations = euclidean_division( count, da->size );
     for ( size_t i = 0; i < rotations; i++ ) {
         dynamic_array_rotate_right( da );
     }
@@ -200,7 +200,7 @@ void dynamic_array_rotate_right_n( struct dynamic_array *da, int count ) {
 
 void dynamic_array_rotate_left_n( struct dynamic_array *da, int count ) {
     // get the mod so as not to do redundant operations
-    int rotations = ( da->size + ( count % da->size ) ) % da->size;
+    int rotations = euclidean_division( count, da->size );
     for ( size_t i = 0; i < rotations; i++ ) {
         dynamic_array_rotate_left( da );
     }
@@ -215,4 +215,24 @@ void dynamic_array_fill( struct dynamic_array *da, const int value ) {
 bool dynamic_array_empty( const struct dynamic_array *da ) {
     assert( da != NULL );
     return da->size == 0;
+}
+
+// https://en.wikipedia.org/wiki/Euclidean_division
+// a = bq + r and 0 <= r < |b|
+// euclidean modulo == euclidean division
+// In C/C++, a % b always returns results with the sign of a
+// Mathematically, modulo is always non-negative
+// % -> remainder operator in C
+// % -> already behaves like Euclidean modulo for unsigned integers
+// returns between [0,n-1], (same behavior of the modulo operator in python)
+int euclidean_division( const int a, const int b ) {
+    if ( b == 0 ) { // b == 0 is Undefined Behavior/Division by zero error
+        return 0;
+    }
+    if ( a == INT_MIN && b == -1 ) {
+        return 0; // mathematically 0 but UB because of overflow
+    }
+    long long r = a % b;
+    if ( r < 0 ) { r += abs( b ); }
+    return r;
 }
