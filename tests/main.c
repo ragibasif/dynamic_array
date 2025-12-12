@@ -10,7 +10,7 @@
  *
  */
 
-#include "dynamic_array.h"
+#include "../src/dynamic_array.h"
 
 #include <stdarg.h>
 #include <stdbool.h>
