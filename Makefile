@@ -41,35 +41,39 @@ default: all
 all: $(TARGET)
 
 $(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 
 $(TARGET): $(BUILD_DIR) $(OBJECTS)
-	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o $@ $(OBJECTS) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(CFLAGS_DEBUG) -o $@ $(OBJECTS) $(LDFLAGS)
 
 .PHONY: test
 test: $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS)
-	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_TEST) -o $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS) $(LDFLAGS)
-	./$(TEST_TARGET)
+	@$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_TEST) -o $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS) $(LDFLAGS)
+	@./$(TEST_TARGET)
+	@make clean
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
-	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CFLAGS_DEBUG) -c $< -o $@
 
 $(BUILD_DIR)/%.o: $(TEST_DIR)/%.c $(HEADERS)
-	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_TEST) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_TEST) -c $< -o $@
 
 .PHONY: run
-run: clean all
-	./$(TARGET)
+run:
+	@make clean
+	@make all
+	@./$(TARGET)
+	@make clean
 
 .PHONY: debug
 debug: $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS)
-	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_TEST) -o $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS) $(LDFLAGS)
-	$(DEBUGGER) ./$(TEST_TARGET)
+	@$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_TEST) -o $(TEST_TARGET) $(OBJECTS) $(TEST_OBJECTS) $(LDFLAGS)
+	@$(DEBUGGER) ./$(TEST_TARGET)
 
 
 .PHONY: clean
 clean:
-	rm -rvf $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)
 
 -include $(DEPS)
 

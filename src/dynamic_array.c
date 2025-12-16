@@ -28,6 +28,11 @@
 #define TEST 0
 #endif
 
+// Internal macro - disabled by default, can be enabled with -DINTERNAL=1
+#ifndef INTERNAL
+#define INTERNAL 0
+#endif
+
 static int euclidean_division( const int a, const int b );
 
 struct dynamic_array *dynamic_array_create( void ) {
